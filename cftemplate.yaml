@@ -112,7 +112,20 @@ Resources:
             echo "Hello from Auto Scaling Group" > /var/www/html/index.html
             systemctl enable httpd
             systemctl start httpd
-
+ 
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      VPCZoneIdentifier:
+        - !Ref SubnetA
+        - !Ref SubnetB
+      MinSize: "1"
+      MaxSize: "4"
+      DesiredCapacity: "1"
+      LaunchTemplate:
+        LaunchTemplateId: !Ref LaunchTemplate
+        Version: !GetAtt LaunchTemplate.LatestVersionNumber
+  
   CpuScalingPolicy:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties:
